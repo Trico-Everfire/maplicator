@@ -73,6 +73,13 @@ void cMain::EnableDisableMenuItems(wxMenu* &menu, int startidentifier, int amnt,
 	}
 }
 
+void cMain::EnableDisableToolbarItems(wxToolBar*& menu, int startidentifier, int amnt, bool enable)
+{
+	for (int id = 0; id < amnt; id++) {
+		menu->FindItem(startidentifier + id)->Enable(enable);
+	}
+}
+
 cMain::~cMain()
 {
 
@@ -91,6 +98,8 @@ void cMain::OnMenuOpen(wxCommandEvent& evt)
 	if (image.IsOk()) {
 		m_MainImage = new wxBitmap(image);
 		EnableDisableMenuItems(menuFile2, 10010, 8, true);
+		EnableDisableToolbarItems(m_ToolBar, 10101, 8, true);
+		this->Refresh();
 	} else {
 		wxMessageBox(wxT("Warning: Image failed to initialize"), dialogue.GetPath(),SLE_WARNING);
 	}
@@ -126,6 +135,8 @@ void cMain::OnMenuExit(wxCommandEvent& evt)
 
 void cMain::OnSelectMapType(wxCommandEvent& evt)
 {
+	wxButton* button = wxDynamicCast(evt.GetEventObject(), wxButton);
+	m_currentMapType = new wxString(button->GetLabel());
 }
 
 void cMain::OnImportClicked(wxCommandEvent& evt) 
@@ -151,15 +162,14 @@ void cMain::OnDraw(wxDC& dc)
 	dc.Clear();
 	if (m_MainImage != nullptr) {
 		wxBitmap image = *m_MainImage;
-		
-		dc.DrawBitmap(image, wxPoint(90 + image.GetSize().x, image.GetSize().y));
+		dc.DrawBitmap(image,90,0);
 	}
 
 }
 
 void cMain::OnPaint(wxPaintEvent& evt)
 {
-	wxBufferedPaintDC dc(this);
+	wxPaintDC dc(this);
 	this->PrepareDC(dc);
 	this->OnDraw(dc);
 }

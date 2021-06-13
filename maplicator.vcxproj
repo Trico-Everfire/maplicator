@@ -23,12 +23,14 @@
     <ClInclude Include="cCanvas.h" />
     <ClInclude Include="cMain.h" />
     <ClInclude Include="cMapFrame.h" />
+    <ClInclude Include="SuperImageButton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cCanvas.cpp" />
     <ClCompile Include="cMain.cpp" />
     <ClCompile Include="cMapFrame.cpp" />
+    <ClCompile Include="SuperImageButton.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

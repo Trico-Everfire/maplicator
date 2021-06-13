@@ -16,6 +16,7 @@ public:
 	wxMenuBar* m_MenuBar = nullptr;
 	map<wxString, wxBitmap>* m_ImageData = new map<wxString, wxBitmap>;
 	wxBitmap* m_MainImage = nullptr;
+	wxString* m_currentMapType = nullptr;
 
 	void OnMenuNew(wxCommandEvent& evt);
 	void OnMenuOpen(wxCommandEvent& evt);
@@ -28,6 +29,7 @@ public:
 	void OnSelectMapType(wxCommandEvent& evt);
 	void OnImportClicked(wxCommandEvent& evt);
 	void EnableDisableMenuItems(wxMenu*& menu, int startidentifier, int amnt, bool enable);
+	void EnableDisableToolbarItems(wxToolBar*& menu, int startidentifier, int amnt, bool enable);
 	wxMenu* menuFile2 = new wxMenu();
 	wxMenu* menuFile = new wxMenu();
 
