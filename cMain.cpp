@@ -25,24 +25,25 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY,"Maplicator",wxPoint(10, 10),wxSize(6
 	m_ToolBar = this->CreateToolBar(wxTB_VERTICAL, wxID_ANY);
 	wxSize size(90, 10);
 	m_ToolBar->SetToolBitmapSize(size);
-	const int maxBTNS = 8; //this is easier to keep track of the amount of buttons.
-	wxButton *btns[maxBTNS];
-	btns[0] = new wxButton(m_ToolBar, 10101, "Temperature", wxDefaultPosition, wxDefaultSize, 0);
-	btns[1] = new wxButton(m_ToolBar, 10102, "Elevation", wxDefaultPosition, wxDefaultSize, 0);
-	btns[2] = new wxButton(m_ToolBar, 10103, "Area Denial", wxDefaultPosition, wxDefaultSize, 0);
-	btns[3] = new wxButton(m_ToolBar, 10104, "Town/Settlement", wxDefaultPosition, wxDefaultSize, 0);
 
-	btns[4] = new wxButton(m_ToolBar, 10105, "Area Of Importance", wxDefaultPosition, wxDefaultSize, 0);
-	btns[5] = new wxButton(m_ToolBar, 10106, "Enemy Camps", wxDefaultPosition, wxDefaultSize, 0);
-	btns[6] = new wxButton(m_ToolBar, 10107, "Dungeons", wxDefaultPosition, wxDefaultSize, 0);
-	btns[7] = new wxButton(m_ToolBar, 10108, "Bosses", wxDefaultPosition, wxDefaultSize, 0);
+
+	SuperImageButton *btns[maxBTNS];
+	btns[0] = new SuperImageButton(m_ToolBar, 10101, "Temperature", wxDefaultPosition, wxDefaultSize, 0);
+	btns[1] = new SuperImageButton(m_ToolBar, 10102, "Elevation", wxDefaultPosition, wxDefaultSize, 0);
+	btns[2] = new SuperImageButton(m_ToolBar, 10103, "Area Denial", wxDefaultPosition, wxDefaultSize, 0);
+	btns[3] = new SuperImageButton(m_ToolBar, 10104, "Town/Settlement", wxDefaultPosition, wxDefaultSize, 0);
+
+	btns[4] = new SuperImageButton(m_ToolBar, 10105, "Area Of Importance", wxDefaultPosition, wxDefaultSize, 0);
+	btns[5] = new SuperImageButton(m_ToolBar, 10106, "Enemy Camps", wxDefaultPosition, wxDefaultSize, 0);
+	btns[6] = new SuperImageButton(m_ToolBar, 10107, "Dungeons", wxDefaultPosition, wxDefaultSize, 0);
+	btns[7] = new SuperImageButton(m_ToolBar, 10108, "Bosses", wxDefaultPosition, wxDefaultSize, 0);
 
 
 	
 	
 	int btnWidth = 40;
 	for (int i = 0; i < maxBTNS; i++) {
-		wxButton* booton = btns[i];
+		SuperImageButton* booton = btns[i];
 		booton->SetSize(100, btnWidth);
 		booton->SetPosition(wxPoint(0, (btnWidth * i)));
 		booton->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cMain::OnSelectMapType), nullptr);
@@ -77,6 +78,10 @@ void cMain::EnableDisableToolbarItems(wxToolBar*& menu, int startidentifier, int
 {
 	for (int id = 0; id < amnt; id++) {
 		menu->FindItem(startidentifier + id)->Enable(enable);
+		if (enable == true) {
+			SuperImageButton* button = wxDynamicCast(menu->FindItem(startidentifier + id), SuperImageButton);
+			button->setDefaultImage(m_MainImage->GetSize());
+		}
 	}
 }
 
@@ -97,8 +102,8 @@ void cMain::OnMenuOpen(wxCommandEvent& evt)
 	wxImage image(dialogue.GetPath());
 	if (image.IsOk()) {
 		m_MainImage = new wxBitmap(image);
-		EnableDisableMenuItems(menuFile2, 10010, 8, true);
-		EnableDisableToolbarItems(m_ToolBar, 10101, 8, true);
+		EnableDisableMenuItems(menuFile2, 10010, maxBTNS, true);
+		EnableDisableToolbarItems(m_ToolBar, 10101, maxBTNS, true);
 		this->Refresh();
 	} else {
 		wxMessageBox(wxT("Warning: Image failed to initialize"), dialogue.GetPath(),SLE_WARNING);
@@ -135,8 +140,16 @@ void cMain::OnMenuExit(wxCommandEvent& evt)
 
 void cMain::OnSelectMapType(wxCommandEvent& evt)
 {
-	wxButton* button = wxDynamicCast(evt.GetEventObject(), wxButton);
-	m_currentMapType = new wxString(button->GetLabel());
+	SuperImageButton* button = wxDynamicCast(evt.GetEventObject(), SuperImageButton);
+	button->SetBackgroundColour(wxColour(179, 208, 255));
+	for (int id = 0; id < maxBTNS; id++) {
+			SuperImageButton* button2 = wxDynamicCast(button->GetParent()->FindItem(10101 + id), SuperImageButton);
+			if (button != button2) {
+				button2->SetBackgroundColour(wxNullColour);
+			}
+	}
+	m_currentMapType = new wxImage(*button->b_Image);
+	this->Refresh();
 }
 
 void cMain::OnImportClicked(wxCommandEvent& evt) 
@@ -163,6 +176,9 @@ void cMain::OnDraw(wxDC& dc)
 	if (m_MainImage != nullptr) {
 		wxBitmap image = *m_MainImage;
 		dc.DrawBitmap(image,90,0);
+		if (m_currentMapType != nullptr) {
+			dc.DrawBitmap(wxBitmap(*m_currentMapType),90,0);
+		}
 	}
 
 }

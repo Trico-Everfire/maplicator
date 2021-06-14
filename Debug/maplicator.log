@@ -1,5 +1,2 @@
-﻿  SuperImageButton.cpp
-C:\Users\bobby\source\repos\maplicator\SuperImageButton.h(14): error C2548: 'SuperImageButton::SuperImageButton': missing default argument for parameter 9
-C:\Users\bobby\source\repos\maplicator\SuperImageButton.h(14): error C2548: 'SuperImageButton::SuperImageButton': missing default argument for parameter 10
-C:\Users\bobby\source\repos\maplicator\SuperImageButton.cpp(4,24): error C2011: 'SuperImageButton': 'class' type redefinition
-C:\Users\bobby\source\repos\maplicator\SuperImageButton.h(9): message : see declaration of 'SuperImageButton'
+﻿  cMain.cpp
+  maplicator.vcxproj -> C:\Users\bobby\source\repos\maplicator\Debug\maplicator.exe

@@ -8,9 +8,7 @@ enum ButtonType {
 
 class SuperImageButton : public wxButton
 {
-	wxImage* b_Image = nullptr;
-	ButtonType* b_ButtonType = nullptr;
-
+public:
 	SuperImageButton(wxWindow* parent,
 		wxWindowID id,
 		const wxString& label = wxEmptyString,
@@ -18,11 +16,14 @@ class SuperImageButton : public wxButton
 		const wxSize& size = wxDefaultSize,
 		long style = 0,
 		const wxValidator& validator = wxDefaultValidator,
-		const wxString& name = wxASCII_STR(wxButtonNameStr), wxImage* image, ButtonType* bt);
-
-
-	void setImage(wxImage image);
-	void setButtonType(ButtonType buttonType);
+		const wxString& name = wxASCII_STR(wxButtonNameStr), ButtonType btnType = ButtonType::PaintMap, wxImage* image = nullptr);
+	~SuperImageButton();
+public:
+	wxImage* b_Image = nullptr;
+	ButtonType* b_ButtonType = nullptr;
+	void setImage(wxImage* image);
+	void setButtonType(ButtonType* buttonType);
+	wxBitmap* CreateValuedBitmap(float value, int w, int h);
+	void setDefaultImage(wxSize size);
 
 };
-

@@ -1,6 +1,7 @@
 
 #include "wx/wx.h"
 #include "cMapFrame.h"
+#include "SuperImageButton.h"
 #include <map>
 using namespace std;
 
@@ -16,7 +17,8 @@ public:
 	wxMenuBar* m_MenuBar = nullptr;
 	map<wxString, wxBitmap>* m_ImageData = new map<wxString, wxBitmap>;
 	wxBitmap* m_MainImage = nullptr;
-	wxString* m_currentMapType = nullptr;
+	wxImage* m_currentMapType = nullptr;
+	static const int maxBTNS = 8; //this is easier to keep track of the amount of buttons.
 
 	void OnMenuNew(wxCommandEvent& evt);
 	void OnMenuOpen(wxCommandEvent& evt);
